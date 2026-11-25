@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Show the full MIT software license in admin setup and About & help.
+
 ## 1.0.0
 
 First release.

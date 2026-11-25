@@ -47,13 +47,19 @@ $h = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 $v = fn($f) => (string)@filemtime(__DIR__ . "/$f");
 $token = $_SESSION['jp_csrf'];
 $brand = '<div class="brand"><span class="brand-mark">JP</span><div><b>JSON Playlist Creator</b><small>Open JSON Playlist generator</small></div></div>';
-// TERMS.md as simple HTML: headings and bold, paragraphs kept.
-$termsBox = function () use ($h) {
+// Render the bundled legal documents as escaped text with simple formatting.
+$legalBox = function (string $text) use ($h) {
     // Lines of one paragraph are joined; blank lines separate paragraphs.
-    $html = $h(preg_replace("/(?<!\n)\n(?!\n)\s*/", ' ', str_replace("\r", '', jp_terms_text())));
+    $html = $h(preg_replace("/(?<!\n)\n(?!\n)\s*/", ' ', str_replace("\r", '', $text)));
     $html = preg_replace('/^# (.+)$/m', '<b class="t-h">$1</b>', $html);
     $html = preg_replace('/\*\*(.+?)\*\*/s', '<b>$1</b>', $html);
     return '<div class="terms">' . preg_replace('/\n{2,}/', '<br><br>', trim($html)) . '</div>';
+};
+$licenseBox = function () use ($legalBox) {
+    $text = file_get_contents(dirname(__DIR__) . '/LICENSE.md');
+    return '<details><summary>MIT software license</summary>'
+        . $legalBox($text === false ? 'The bundled LICENSE.md could not be read.' : $text)
+        . '</details>';
 };
 ?>
 <!doctype html>
@@ -91,7 +97,8 @@ $termsBox = function () use ($h) {
                 <div class="c-6"><label class="lbl" for="pw2">Repeat it</label><input class="inp" type="password" id="pw2" name="password2" required minlength="<?= JP_MIN_PASSWORD ?>" autocomplete="new-password"></div>
             </div>
             <label class="lbl" style="margin-top:18px">Terms of use</label>
-            <?= $termsBox() ?>
+            <?= $legalBox(jp_terms_text()) ?>
+            <?= $licenseBox() ?>
             <label class="agree"><input type="checkbox" name="accept" value="1" required>
                 <span>I have read and accept the terms of use. I will only publish content that I own or am authorized by the rights holders to distribute.</span></label>
             <button class="btn btn-primary btn-block" type="submit">Finish setup</button>
@@ -129,13 +136,15 @@ $termsBox = function () use ($h) {
             <?php if ($error): ?><div class="banner banner-danger"><?= $h($error) ?></div><?php endif; ?>
             <input type="hidden" name="form" value="terms">
             <input type="hidden" name="token" value="<?= $h($token) ?>">
-            <?= $termsBox() ?>
+            <?= $legalBox(jp_terms_text()) ?>
+            <?= $licenseBox() ?>
             <label class="agree"><input type="checkbox" name="accept" value="1" required><span>I have read and accept the updated terms of use.</span></label>
             <button class="btn btn-primary btn-block" type="submit">Continue</button>
         </form>
     </main>
 <?php else: ?>
     <div id="jp-app" class="app"><div class="loading">Loading…</div></div>
+    <template id="jp-license"><?= $licenseBox() ?></template>
     <div id="jp-modal"></div>
     <div id="jp-dialog"></div>
     <div id="jp-toasts" class="toasts" aria-live="polite"></div>

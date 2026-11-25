@@ -243,7 +243,7 @@
         accounts: ['Accounts', 'Who can sign in. Each account has its own username and password.'],
         settings: ['Settings', 'Playlist name, time zone and other options.'],
         backups: ['Backups & export', 'A copy is kept before every save. Export the whole playlist to move or keep it.'],
-        about: ['About & help', 'Version, terms, and how players connect.'],
+        about: ['About & help', 'Version, license, terms, and how players connect.'],
     };
 
     function render() {
@@ -509,6 +509,7 @@
             <section class="card card-pad"><h2>JSON Playlist Creator ${esc(S.version)}</h2>
                 <p>A lightweight tool to create a playlist from content you own or are authorized to distribute, and publish it to players in the Open JSON Playlist format.</p>
                 <div class="banner banner-info">Terms of use accepted on ${esc(acc)}. Only publish content you own or have the rights holders' permission to distribute.</div>
+                ${document.getElementById('jp-license').innerHTML}
                 <h3 style="margin-top:18px">Server tools</h3>
                 <div class="chips"><span class="chip ${S.canBuild ? 'green' : ''}">ffmpeg ${S.canBuild ? 'available' : 'not available'}</span><span class="chip ${S.canProbe ? 'green' : ''}">ffprobe ${S.canProbe ? 'available' : 'not available'}</span></div>
                 <p class="muted small">Without ffmpeg, run <code>php tools/build-hls.php &lt;key&gt;</code> on a computer that has it, then upload <code>media/hls/&lt;key&gt;/</code>.</p></section></div>`;
