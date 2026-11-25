@@ -1,0 +1,12 @@
+# Uploaded artwork: served as plain images. Nothing here runs as code.
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php\d?|phtml|phar|cgi|pl|py|sh|html?|svg)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+RemoveHandler .php .phtml .phar
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>

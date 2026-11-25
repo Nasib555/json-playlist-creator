@@ -1,0 +1,10 @@
+# Your playlist, logins, backups and uploads: never commit them.
+/data/*
+!/data/.htaccess
+/media/*
+!/media/.htaccess
+!/media/hls/
+/media/hls/*
+/images/*
+!/images/.htaccess
+.DS_Store

@@ -1,0 +1,18 @@
+# Uploaded videos and live segments: served as plain files (with range requests for seeking). Nothing here runs as code.
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php\d?|phtml|phar|cgi|pl|py|sh|html?|svg)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+RemoveHandler .php .phtml .phar
+AddType video/mp4 .mp4 .m4v
+AddType video/quicktime .mov
+AddType video/x-matroska .mkv
+AddType video/webm .webm
+AddType video/mp2t .ts
+AddType application/vnd.apple.mpegurl .m3u8
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
