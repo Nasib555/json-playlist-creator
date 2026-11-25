@@ -8,7 +8,7 @@
  */
 ini_set('display_errors', '0');
 
-const JP_VERSION = '1.0.1';
+const JP_VERSION = '1.0.2';
 const JP_SCHEMA = 1;
 /** Version of TERMS.md the admin accepts at setup. Bump when the terms change (the admin is asked again). */
 const JP_TERMS_VERSION = 1;

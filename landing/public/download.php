@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 $root = dirname(__DIR__);
-$filename = 'json-playlist-creator-1.0.1.zip';
+$filename = 'json-playlist-creator-1.0.2.zip';
 $zip = fopen($root . '/' . $filename, 'rb');
 $size = $zip ? fstat($zip)['size'] : 0;
 if (!$size) {

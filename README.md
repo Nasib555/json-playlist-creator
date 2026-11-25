@@ -4,7 +4,7 @@
 
 Turn your video library into movies, series and live channels with a programme guide and catch-up. Host it on your own computer or PHP server. No database required.
 
-**[Download JSON Playlist Creator 1.0.1 (ZIP)](https://github.com/Nasib555/json-playlist-creator/releases/download/v1.0.1/json-playlist-creator-1.0.1.zip)**
+**[Download JSON Playlist Creator 1.0.2 (ZIP)](https://github.com/Nasib555/json-playlist-creator/releases/download/v1.0.2/json-playlist-creator-1.0.2.zip)**
 
 ### From library to lineup
 

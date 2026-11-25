@@ -18,13 +18,14 @@ $error = null;
 $values = ['name' => 'My Playlist', 'timezone' => 'UTC'];
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     $form = (string)($_POST['form'] ?? '');
+    $acceptedTerms = ($_POST['accept'] ?? null) === '1';
     if (!hash_equals($_SESSION['jp_csrf'], (string)($_POST['token'] ?? ''))) {
         $error = 'The form expired. Please try again.';
     } elseif ($form === 'setup' && !$setUp) {
         $values = ['name' => (string)($_POST['name'] ?? ''), 'timezone' => (string)($_POST['timezone'] ?? 'UTC')];
         try {
             if ((string)($_POST['password'] ?? '') !== (string)($_POST['password2'] ?? '')) throw new RuntimeException('The two passwords don\'t match.');
-            jp_run_setup((string)($_POST['password'] ?? ''), $values['name'], $values['timezone'], !empty($_POST['accept']));
+            jp_run_setup((string)($_POST['password'] ?? ''), $values['name'], $values['timezone'], $acceptedTerms);
             jp_login((string)$_POST['password']);
         } catch (Throwable $e) {
             $error = $e->getMessage();
@@ -32,7 +33,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     } elseif ($form === 'login' && $setUp) {
         $error = jp_login($_POST['password'] ?? '');
     } elseif ($form === 'terms' && jp_logged_in()) {
-        if (empty($_POST['accept'])) $error = 'Please accept the updated terms to continue.';
+        if (!$acceptedTerms) $error = 'Please accept the updated terms to continue.';
         else jp_record_terms();
     } elseif ($form === 'logout') {
         jp_logout();
@@ -144,7 +145,10 @@ $licenseBox = function () use ($legalBox) {
     </main>
 <?php else: ?>
     <div id="jp-app" class="app"><div class="loading">Loading…</div></div>
-    <template id="jp-license"><?= $licenseBox() ?></template>
+    <template id="jp-agreements">
+        <details><summary>Read the Terms of Use</summary><?= $legalBox(jp_terms_text()) ?></details>
+        <?= $licenseBox() ?>
+    </template>
     <div id="jp-modal"></div>
     <div id="jp-dialog"></div>
     <div id="jp-toasts" class="toasts" aria-live="polite"></div>
